@@ -6,7 +6,7 @@
       ImageId: ami-0be2609ba883822ec # Amazon Linux AMI in US East (N. Virginia)
       Tags:
         - Key: Name
-          Value: demoEC2
+          Value: demo2-EC2
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
