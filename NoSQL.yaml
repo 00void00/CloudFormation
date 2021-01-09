@@ -1,0 +1,14 @@
+Resources:
+ myDynamoDBTable:
+   Type: AWS::DynamoDB::Table
+   Properties:
+     TableName: demotable
+     AttributeDefinitions: 
+     - AttributeName: Artist
+       AttributeType: S
+     KeySchema:
+     - AttributeName: Artist
+       KeyType: HASH
+     ProvisionedThroughput:
+       ReadCapacityUnits: 5
+       WriteCapacityUnits: 5
