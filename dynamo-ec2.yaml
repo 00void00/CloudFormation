@@ -1,1 +1,67 @@
-
+AWSTemplateFormatVersion: "2010-09-09"
+Resources: 
+  RootRole: 
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "ec2.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/"
+  RolePolicies: 
+    Type: "AWS::IAM::Policy"
+    Properties: 
+      PolicyName: "root"
+      PolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Action: "*" #dynamo#################################################################################################################
+            Resource: "*"
+      Roles: 
+        - 
+          Ref: "RootRole"
+  RootInstanceProfile: 
+    Type: "AWS::IAM::InstanceProfile"
+    Properties: 
+      Path: "/"
+      Roles: 
+        - 
+          Ref: "RootRole"
+          
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0be2609ba883822ec # Amazon Linux AMI in US East (N. Virginia)
+      Tags:
+        - Key: Name
+          Value: demoEC2
+      IamInstanceProfile:
+        - 
+          Ref: "RootInstanceProfile"
+          
+  myDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: demotable
+      AttributeDefinitions: 
+      - AttributeName: Artist
+        AttributeType: S
+      - AttributeName: Song
+        AttributeType: S
+      KeySchema:
+      - AttributeName: Artist
+        KeyType: HASH
+      - AttributeName: Song
+        KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
