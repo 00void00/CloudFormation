@@ -28,11 +28,11 @@ Resources:
       Roles: 
         - 
           Ref: "RootRole"
-  RootInstanceProfile: 
+  RootInstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
-    Properties: 
+    Properties:
       Path: "/"
-      Roles: 
+      Roles:
         - 
           Ref: "RootRole"
           
@@ -44,9 +44,7 @@ Resources:
       Tags:
         - Key: Name
           Value: demoEC2
-      IamInstanceProfile:
-        - 
-          Ref: "RootInstanceProfile"
+      IamInstanceProfile: !Ref RootInstanceProfile
           
   myDynamoDBTable:
     Type: AWS::DynamoDB::Table
