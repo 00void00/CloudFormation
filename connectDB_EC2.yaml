@@ -63,5 +63,3 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-    DependsOn:
-      - RolePolicies
