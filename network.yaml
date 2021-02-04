@@ -1,0 +1,103 @@
+Resources:
+#VPC creation
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/24
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value:demo-vpc
+
+#public subnet creation
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.0.0/25
+      MapPublicIpOnLaunch: true
+      AvailabilityZone: "us-east-1a"
+      Tags:
+      - Key: Name
+        Value: public
+
+#private subnet creation
+    PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.0.128/25
+      MapPublicIpOnLaunch: false
+      AvailabilityZone: "us-east-1a"
+      Tags:
+      - Key: Name
+        Value: private
+
+#Internetgateway for public subnet
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: demo-gateway
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
+#route table for internetgateway
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: demo-route-table
+
+  DefaultPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet
+
+#instance creation in private subnet
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: project
+      InstanceType: t2.micro
+      ImageId: ami-0be2609ba883822ec # Amazon Linux AMI in US East (N. Virginia)
+      Tags:
+        - Key: Name
+          Value: demoEC2
+       SecurityGroups: !Ref EC2SecurityGroup
+       SubnetId: !Ref PrivateSubnet
+
+#security group for EC2
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription: Enable HTTP access via user defined port
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 143
+        IpProtocol: tcp
+        ToPort: 143
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
