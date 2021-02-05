@@ -7,17 +7,17 @@ Parameters:
     Description: Default is t2.micro.
 
   PublicSubnet1CIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Description: IP range (CIDR notation) for the public subnet in the first Availability Zone
     Type: String
     Default: 10.0.0.0/25
 
   PrivateSubnet1CIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone
+    Description: IP range (CIDR notation) for the private subnet in the first Availability Zone
     Type: String
     Default: 10.0.0.128/25
 
   VpcCIDR:
-    Description: Please enter the IP range (CIDR notation) for this VPC
+    Description:  IP range (CIDR notation) for this VPC
     Type: String
     Default: 10.0.0.0/24
 
@@ -27,17 +27,17 @@ Parameters:
     Description: Default is t2.micro.
 
   PublicSubnet2CIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Description:  IP range (CIDR notation) for the public subnet in the second Availability Zone
     Type: String
     Default: 10.0.1.0/25
 
   PrivateSubnet2CIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone
+    Description:   IP range (CIDR notation) for the private subnet in the second Availability Zone
     Type: String
     Default: 10.0.1.128/25
 
   VpcCIDR2:
-    Description: Please enter the IP range (CIDR notation) for this VPC
+    Description:  IP range (CIDR notation) for this VPC
     Type: String
     Default: 10.0.1.0/24
 
