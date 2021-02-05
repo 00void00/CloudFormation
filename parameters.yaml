@@ -167,7 +167,7 @@ Resources:
     Properties:
       VpcId:
         Ref: VPC2
-      CidrBlock: !Ref PrivateSubnet1CIDR
+      CidrBlock: !Ref PrivateSubnet2CIDR
       MapPublicIpOnLaunch: false
       AvailabilityZone: "us-east-1b"
       Tags:
